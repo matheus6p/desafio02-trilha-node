@@ -40,13 +40,37 @@ function checksCreateTodosUserAvailability(request, response, next) {
 }
 
 function checksTodoExists(request, response, next) {
-  // Complete aqui
   const { username } = request.headers;
   const { id } = request.params;
+
+  const user = users.find((user) => user.username === username);
+  const idFound = users.find((user) => user.id === id);
+
+  if (!user) {
+    return response.status(404).json({ error: "User not found" });
+  }
+
+  request.user = user;
+  request.id = idFound;
+
+  next();
+
+  //TODO: validar uuid
 }
 
 function findUserById(request, response, next) {
   // Complete aqui
+  const { id } = request.params;
+
+  const user = users.find((user) => user.id === id);
+
+  if (!user) {
+    return response.status(404).json({ error: "User not found" });
+  }
+
+  request.user = user;
+
+  next();
 }
 
 app.post("/users", (request, response) => {
