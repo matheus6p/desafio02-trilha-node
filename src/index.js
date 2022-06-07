@@ -53,14 +53,14 @@ function checksTodoExists(request, response, next) {
     return response.status(400).json({ error: "TODO id incorrect" });
   }
 
-  const userTodos = user.todos.some((todo) => todo.id === id);
+  const userTodo = user.todos.find((todo) => todo.id === id);
 
-  if (!userTodos) {
-    return response.status(400).json({ error: "Not found" });
+  if (!userTodo) {
+    return response.status(404).json({ error: "Not found" });
   }
 
   request.user = user;
-  request.id = id;
+  request.todo = userTodo;
 
   return next();
 }
